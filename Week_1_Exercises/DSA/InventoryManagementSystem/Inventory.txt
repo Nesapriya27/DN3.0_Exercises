@@ -24,6 +24,32 @@ Trees:
 Binary Search Trees (BST): Allow for ordered storage and efficient searching, insertion, and deletion operations. Balanced trees (e.g., AVL trees, Red-Black trees) 
 ensure O(log n) complexity for these operations, making them suitable for maintaining sorted inventories and supporting range queries and ordered traversals.
 
+3.Analyze the time complexity of each operation (add, update, delete) in your chosen data structure.
+Chosen Data Structure: HashMap
+Add Operation:
+Time Complexity: O(1)
+Explanation: Inserting a product into a HashMap involves computing the hash code of the key (productId) and placing the entry in the appropriate bucket. On average, this operation takes constant time, assuming the hash function distributes keys uniformly across buckets. However, in the worst case (e.g., all keys hash to the same bucket), the time complexity can degrade to O(n), where n is the number of entries.
+
+Update Operation:
+Time Complexity: O(1)
+Explanation: Updating a product involves retrieving the product by its key (productId) and then updating its attributes. The retrieval operation takes constant time on average, and updating the attributes is also a constant-time operation. Thus, the overall time complexity is O(1) on average. Again, in the worst case, it can degrade to O(n) if the hash function does not distribute keys well.
+
+Delete Operation:
+Time Complexity: O(1)
+Explanation: Deleting a product involves locating the entry by its key (productId) and removing it from the HashMap. On average, both the retrieval and removal operations take constant time. In the worst case, the time complexity can degrade to O(n) if many keys hash to the same bucket.
+
+4.Discuss how you can optimize these operations.
+Optimal Load Factor:
+Maintaining an optimal load factor ensures that the HashMap does not become too full, which helps maintain O(1) time complexity for most operations. If the load factor exceeds this threshold, the HashMap automatically resizes (usually doubling its capacity), redistributing the entries across a larger number of buckets.
+
+Hash Function:
+A good hash function ensures that keys are evenly distributed across the buckets, minimizing the chances of collisions. This helps maintain the average case time complexity of O(1) for insertions, updates, and deletions.
+
+Resizing:
+When resizing the HashMap (rehashing all entries), it's important to ensure this operation is efficient. Although resizing has a time complexity of O(n), it happens infrequently,and the cost is amortized over multiple insertions.
+
+Concurrent Access:
+For multi-threaded applications, using ConcurrentHashMap instead of HashMap can help manage concurrent access efficiently. ConcurrentHashMap uses finer-grained locking, reducing contention and improving throughput for concurrent operations.
 
 
 
