@@ -1,0 +1,10 @@
+Step 1: Understand Asymptotic Notation\
+Big O Notation:
+Big O notation is a mathematical notation used to describe the upper bound of an algorithm's running time. It gives an idea of the worst-case scenario in terms of 
+performance and helps in understanding how an algorithm scales with the input size.
+For example, O(n) means the running time increases linearly with the input size, while O(log n) means the running time increases logarithmically
+
+Best, Average, and Worst-Case Scenarios for Search Operations
+Best Case: The scenario where the search operation completes in the least amount of time. For example, in a linear search, finding the target element at the first position.
+Average Case: The expected time for the search operation over all possible inputs. It represents the expected performance of the algorithm.
+Worst Case: The scenario where the search operation takes the maximum amount of time. For example, in a linear search, not finding the element or finding it at the last position
