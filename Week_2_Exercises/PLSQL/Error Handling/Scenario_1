@@ -1,0 +1,38 @@
+CREATE OR REPLACE PROCEDURE SafeTransferFunds (
+    p_FromAccountID IN NUMBER,
+    p_ToAccountID IN NUMBER,
+    p_Amount IN NUMBER
+) IS
+    v_FromBalance NUMBER;
+    v_ToBalance NUMBER;
+    insufficient_funds EXCEPTION;
+    no_account_found EXCEPTION;
+    PRAGMA EXCEPTION_INIT(insufficient_funds, -20001);
+    PRAGMA EXCEPTION_INIT(no_account_found, -20002);
+BEGIN
+    -- Check if both accounts exist and get their balances
+    SELECT Balance INTO v_FromBalance FROM Accounts WHERE AccountID = p_FromAccountID;
+    SELECT Balance INTO v_ToBalance FROM Accounts WHERE AccountID = p_ToAccountID;
+    
+    -- Check if sufficient funds are available
+    IF v_FromBalance < p_Amount THEN
+        RAISE insufficient_funds;
+    END IF;
+
+    -- Transfer the funds
+    UPDATE Accounts SET Balance = Balance - p_Amount WHERE AccountID = p_FromAccountID;
+    UPDATE Accounts SET Balance = Balance + p_Amount WHERE AccountID = p_ToAccountID;
+    
+    COMMIT;
+EXCEPTION
+    WHEN insufficient_funds THEN
+        ROLLBACK;
+        DBMS_OUTPUT.PUT_LINE('Error: Insufficient funds in account ' || p_FromAccountID);
+    WHEN no_account_found THEN
+        ROLLBACK;
+        DBMS_OUTPUT.PUT_LINE('Error: One or both accounts not found.');
+    WHEN OTHERS THEN
+        ROLLBACK;
+        DBMS_OUTPUT.PUT_LINE('Error: ' || SQLERRM);
+END SafeTransferFunds;
+/
