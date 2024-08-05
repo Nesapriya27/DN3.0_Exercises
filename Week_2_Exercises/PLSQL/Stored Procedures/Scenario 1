@@ -1,0 +1,8 @@
+CREATE OR REPLACE PROCEDURE ProcessMonthlyInterest
+IS
+BEGIN
+    UPDATE Accounts
+    SET balance = balance * 1.01,
+        lastmodified = SYSDATE
+    WHERE accounttype = 'Savings';
+END;
