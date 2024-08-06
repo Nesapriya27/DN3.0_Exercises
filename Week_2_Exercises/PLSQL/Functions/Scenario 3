@@ -1,0 +1,25 @@
+def HasSufficientBalance(account_id, amount):
+    """
+    Check if the account has at least the specified amount.
+
+    :param account_id: The account ID
+    :param amount: The amount to check
+    :return: True if the account has sufficient balance, False otherwise
+    """
+    # Assuming we have a dictionary with account IDs as keys and balances as values
+    accounts = {
+        'ACC123': 5000,
+        'ACC456': 3000,
+        'ACC789': 7000
+    }
+    
+    if account_id not in accounts:
+        raise ValueError("Account ID not found")
+
+    return accounts[account_id] >= amount
+
+# Example usage
+account_id = 'ACC123'
+amount = 4500
+has_balance = HasSufficientBalance(account_id, amount)
+print(f"Has Sufficient Balance: {has_balance}")
