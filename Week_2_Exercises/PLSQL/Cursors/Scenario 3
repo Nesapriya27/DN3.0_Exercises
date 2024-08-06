@@ -1,0 +1,26 @@
+DECLARE
+    CURSOR UpdateLoanInterestRates IS
+        SELECT LoanID, InterestRate
+        FROM Loans;
+
+    loan_id Loans.LoanID%TYPE;
+    interest_rate Loans.InterestRate%TYPE;
+    new_interest_rate Loans.InterestRate%TYPE;
+BEGIN
+    OPEN UpdateLoanInterestRates;
+    LOOP
+        FETCH UpdateLoanInterestRates INTO loan_id, interest_rate;
+        EXIT WHEN UpdateLoanInterestRates%NOTFOUND;
+        
+        -- New interest rate policy logic (example: reduce by 1%)
+        new_interest_rate := interest_rate - 1;
+
+        UPDATE Loans
+        SET InterestRate = new_interest_rate
+        WHERE LoanID = loan_id;
+
+        DBMS_OUTPUT.PUT_LINE('Updated Loan ID: ' || loan_id || ' to new Interest Rate: ' || new_interest_rate);
+    END LOOP;
+    CLOSE UpdateLoanInterestRates;
+END;
+/
