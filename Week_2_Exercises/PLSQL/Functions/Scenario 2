@@ -1,0 +1,23 @@
+def CalculateMonthlyInstallment(loan_amount, interest_rate, loan_duration_years):
+    """
+    Calculate the monthly installment for a loan.
+
+    :param loan_amount: The total amount of the loan
+    :param interest_rate: Annual interest rate as a percentage (e.g., 5 for 5%)
+    :param loan_duration_years: Duration of the loan in years
+    :return: Monthly installment amount
+    """
+    monthly_interest_rate = interest_rate / 100 / 12
+    number_of_payments = loan_duration_years * 12
+    if monthly_interest_rate == 0:  # No interest case
+        monthly_installment = loan_amount / number_of_payments
+    else:
+        monthly_installment = loan_amount * (monthly_interest_rate * (1 + monthly_interest_rate) ** number_of_payments) / ((1 + monthly_interest_rate) ** number_of_payments - 1)
+    return monthly_installment
+
+# Example usage
+loan_amount = 100000
+interest_rate = 5
+loan_duration_years = 15
+monthly_installment = CalculateMonthlyInstallment(loan_amount, interest_rate, loan_duration_years)
+print(f"Monthly Installment: {monthly_installment}")
