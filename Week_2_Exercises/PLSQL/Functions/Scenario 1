@@ -1,0 +1,18 @@
+from datetime import datetime
+
+def CalculateAge(date_of_birth):
+    """
+    Calculate the age of a customer based on their date of birth.
+
+    :param date_of_birth: Date of birth in 'YYYY-MM-DD' format
+    :return: Age in years
+    """
+    birth_date = datetime.strptime(date_of_birth, '%Y-%m-%d')
+    today = datetime.today()
+    age = today.year - birth_date.year - ((today.month, today.day) < (birth_date.month, birth_date.day))
+    return age
+
+# Example usage
+dob = '1990-08-15'
+age = CalculateAge(dob)
+print(f"Age: {age}")
