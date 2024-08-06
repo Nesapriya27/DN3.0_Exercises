@@ -1,27 +1,30 @@
 DECLARE
     CURSOR GenerateMonthlyStatements IS
-        SELECT c.CustomerID, c.CustomerName, t.TransactionID, t.TransactionDate, t.Amount
+        SELECT c.CustomerID, c.Name, t.TransactionID, t.TransactionDate, t.Amount, t.TransactionType
         FROM Customers c
-        JOIN Transactions t ON c.CustomerID = t.CustomerID
+        JOIN Accounts a ON c.CustomerID = a.CustomerID
+        JOIN Transactions t ON a.AccountID = t.AccountID
         WHERE TO_CHAR(t.TransactionDate, 'YYYY-MM') = TO_CHAR(SYSDATE, 'YYYY-MM')
         ORDER BY c.CustomerID, t.TransactionDate;
 
-    customer_id Customers.CustomerID%TYPE;
-    customer_name Customers.CustomerName%TYPE;
-    transaction_id Transactions.TransactionID%TYPE;
-    transaction_date Transactions.TransactionDate%TYPE;
-    amount Transactions.Amount%TYPE;
+    v_CustomerID Customers.CustomerID%TYPE;
+    v_Name Customers.Name%TYPE;
+    v_TransactionID Transactions.TransactionID%TYPE;
+    v_TransactionDate Transactions.TransactionDate%TYPE;
+    v_Amount Transactions.Amount%TYPE;
+    v_TransactionType Transactions.TransactionType%TYPE;
 BEGIN
     OPEN GenerateMonthlyStatements;
     LOOP
-        FETCH GenerateMonthlyStatements INTO customer_id, customer_name, transaction_id, transaction_date, amount;
+        FETCH GenerateMonthlyStatements INTO v_CustomerID, v_Name, v_TransactionID, v_TransactionDate, v_Amount, v_TransactionType;
         EXIT WHEN GenerateMonthlyStatements%NOTFOUND;
         
-        DBMS_OUTPUT.PUT_LINE('Customer ID: ' || customer_id);
-        DBMS_OUTPUT.PUT_LINE('Customer Name: ' || customer_name);
-        DBMS_OUTPUT.PUT_LINE('Transaction ID: ' || transaction_id);
-        DBMS_OUTPUT.PUT_LINE('Transaction Date: ' || TO_CHAR(transaction_date, 'YYYY-MM-DD'));
-        DBMS_OUTPUT.PUT_LINE('Amount: ' || amount);
+        DBMS_OUTPUT.PUT_LINE('Customer ID: ' || v_CustomerID);
+        DBMS_OUTPUT.PUT_LINE('Customer Name: ' || v_Name);
+        DBMS_OUTPUT.PUT_LINE('Transaction ID: ' || v_TransactionID);
+        DBMS_OUTPUT.PUT_LINE('Transaction Date: ' || TO_CHAR(v_TransactionDate, 'YYYY-MM-DD'));
+        DBMS_OUTPUT.PUT_LINE('Amount: ' || v_Amount);
+        DBMS_OUTPUT.PUT_LINE('Transaction Type: ' || v_TransactionType);
         DBMS_OUTPUT.PUT_LINE('-------------------------------');
     END LOOP;
     CLOSE GenerateMonthlyStatements;
