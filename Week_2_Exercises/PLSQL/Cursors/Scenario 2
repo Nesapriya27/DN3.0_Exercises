@@ -3,20 +3,21 @@ DECLARE
         SELECT AccountID, Balance
         FROM Accounts;
 
-    account_id Accounts.AccountID%TYPE;
-    balance Accounts.Balance%TYPE;
-    annual_fee CONSTANT NUMBER := 50;  -- Assuming an annual fee of $50
+    v_AccountID Accounts.AccountID%TYPE;
+    v_Balance Accounts.Balance%TYPE;
+    v_AnnualFee CONSTANT NUMBER := 50;  -- Assuming an annual fee of $50
 BEGIN
     OPEN ApplyAnnualFee;
     LOOP
-        FETCH ApplyAnnualFee INTO account_id, balance;
+        FETCH ApplyAnnualFee INTO v_AccountID, v_Balance;
         EXIT WHEN ApplyAnnualFee%NOTFOUND;
         
         UPDATE Accounts
-        SET Balance = Balance - annual_fee
-        WHERE AccountID = account_id;
+        SET Balance = Balance - v_AnnualFee,
+            LastModified = SYSDATE
+        WHERE AccountID = v_AccountID;
 
-        DBMS_OUTPUT.PUT_LINE('Applied annual fee to Account ID: ' || account_id || '. New Balance: ' || (balance - annual_fee));
+        DBMS_OUTPUT.PUT_LINE('Applied annual fee to Account ID: ' || v_AccountID || '. New Balance: ' || (v_Balance - v_AnnualFee));
     END LOOP;
     CLOSE ApplyAnnualFee;
 END;
